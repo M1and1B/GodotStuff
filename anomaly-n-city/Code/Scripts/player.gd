@@ -1,13 +1,15 @@
 extends BaseMob
 class_name Player
 
-@export var Speed := 100
+@export var Speed := 75
 var Velocity := Vector2.ZERO
 var Moving := false
 
 func _process(delta):
 	MoveOnInput()
 	Physic(delta)
+	var SpeedText = str(Speed)
+	$Label.text = SpeedText
 
 func MoveOnInput():
 	if Input.is_action_pressed("Jump"):
@@ -27,14 +29,14 @@ func MoveOnInput():
 
 func Physic(d):
 	var decceleration = 5
-	var walkSpeed = Speed / 2
+	var walkSpeed = 50
 	print("[DEBUG] current speed is: ", Speed)
 	
 	if !Moving: if Speed >= decceleration: Speed -= decceleration ## Пока игрок не двигается, его скорость постоянно падает.
 	if Input.is_action_pressed("Walk"):
 		if !Moving: Speed = walkSpeed  ## Если игрок переключиться на режим ходьбы, пока персонаж не двигался, то значение скорости выставляется моментально.
 		if Speed > walkSpeed: Speed -= 1  ## Если игрок переключается на ходьбу во время бега, то скорость понижается постепенно.
-	else: if Speed < 100: Speed += 1  ## Постепенное повышение изначальной скорости, после перехода с бега на ходьбу.
+	else: if Speed < 75: Speed += 1  ## Постепенное повышение изначальной скорости, после перехода с бега на ходьбу.
 	Velocity.normalized()
 	position += ((Velocity * Speed) / 100) * d
 	Moving = false
